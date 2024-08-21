@@ -1,22 +1,42 @@
-import React, { useState } from "react"
-import { IconLink } from '@douyinfe/semi-icons';
-import { useStorage } from "@plasmohq/storage/hook"
-import { IconGithubLogo, IconCopy } from '@douyinfe/semi-icons';
-import { Tag, RadioGroup, Radio, Progress, Empty, Typography, Banner, Avatar, Button, Toast } from '@douyinfe/semi-ui';
-import { IllustrationConstruction } from '@douyinfe/semi-illustrations';
+import { IconCopy, IconGithubLogo, IconLink } from "@douyinfe/semi-icons"
+import { IllustrationConstruction } from "@douyinfe/semi-illustrations"
 import {
-  dataSource, type DataProps, authenticator, authenticatorOptions, copyTextToClipboard,
-  SECURITY_URL, gmailIconUrl, createGmailDraftMessage,
-} from '~/util'
-import i18n from '~/i18n'
-import './style.css'
+  Avatar,
+  Banner,
+  Button,
+  Empty,
+  Progress,
+  Radio,
+  RadioGroup,
+  Tag,
+  Toast,
+  Typography
+} from "@douyinfe/semi-ui"
+import React, { useState } from "react"
 
-const { Title, Text } = Typography;
+import { useStorage } from "@plasmohq/storage/hook"
+
+import i18n from "~/i18n"
+import {
+  authenticator,
+  authenticatorOptions,
+  copyTextToClipboard,
+  createGmailDraftMessage,
+  dataSource,
+  gmailIconUrl,
+  SECURITY_URL,
+  type DataProps
+} from "~/util"
+
+import "./style.css"
+
+const { Title, Text } = Typography
 
 const containerStyle: React.CSSProperties = {
-  width: 300, padding: 6, margin: 0
+  width: 300,
+  padding: 6,
+  margin: 0
 }
-
 
 function IndexPopup() {
   const [store, setStore] = useState<Record<string, DataProps>>(null)
@@ -24,7 +44,7 @@ function IndexPopup() {
 
   React.useEffect(() => {
     // 获取初始化数据
-    dataSource.get().then(res => {
+    dataSource.get().then((res) => {
       setStore(res || {})
     })
   }, [])
@@ -39,7 +59,7 @@ function IndexPopup() {
   const handleCopy = (account, item) => {
     copyTextToClipboard(item.value)
     const params = store[account]
-    const codes = params.recoveryCodes.map(itemc => {
+    const codes = params.recoveryCodes.map((itemc) => {
       if (itemc.value === item.value) {
         return {
           ...itemc,
@@ -68,13 +88,11 @@ function IndexPopup() {
       <div style={containerStyle}>
         <Empty
           title={i18n("nodata")}
-          image={<IllustrationConstruction style={{ width: 150, height: 150 }} />}
+          image={
+            <IllustrationConstruction style={{ width: 150, height: 150 }} />
+          }
           description={
-            <Text
-              underline
-              icon={<IconLink />}
-              link={{ href: SECURITY_URL }}
-            >
+            <Text underline icon={<IconLink />} link={{ href: SECURITY_URL }}>
               {i18n("startTip")}
             </Text>
           }
@@ -87,7 +105,7 @@ function IndexPopup() {
     <div style={containerStyle}>
       <Disclaimers />
       {/* <button onClick={() => dataSource.save({})}>clear</button> */}
-      {Object.keys(store).map(account => {
+      {Object.keys(store).map((account) => {
         const { recoveryCodes = [], secret } = store[account]
         const value = groupState[account] || "2FA"
         const tfaVisible = value === "2FA"
@@ -96,19 +114,20 @@ function IndexPopup() {
         return (
           <div key={account}>
             <RadioGroup
-              type='button'
+              type="button"
               value={value}
-              style={{ display: "flex", "alignItems": "center" }}
-              onChange={e => onRadioGroupChange(e, account)}
-            >
+              style={{ display: "flex", alignItems: "center" }}
+              onChange={(e) => onRadioGroupChange(e, account)}>
               <Radio value="2FA">
                 <Tag
                   size="small"
-                  type='light'
-                  shape='circle'
-                  style={{ maxWidth: 160, color: tfaVisible && "var(--semi-color-primary)" }}
-                  prefixIcon={<IconGithubLogo />}
-                >
+                  type="light"
+                  shape="circle"
+                  style={{
+                    maxWidth: 160,
+                    color: tfaVisible && "var(--semi-color-primary)"
+                  }}
+                  prefixIcon={<IconGithubLogo />}>
                   {account}
                 </Tag>
               </Radio>
@@ -116,7 +135,7 @@ function IndexPopup() {
               <Radio value="Save">
                 {/* <IconSave /> */}
                 <Avatar
-                  alt='User'
+                  alt="User"
                   size="extra-extra-small"
                   style={{ margin: "0 4px 0 2px", display: "inline-flex" }}
                   border={{ motion: saveVisible }}
@@ -126,19 +145,19 @@ function IndexPopup() {
               </Radio>
             </RadioGroup>
             <div style={{ margin: "12px 0 8px 0" }}>
-              {tfaVisible && (
-                <TFACode secret={secret} />
-              )}
+              {tfaVisible && <TFACode secret={secret} />}
               {recoveryVisible && (
                 <div>
                   <WarningBanner data={recoveryCodes} />
                   <NoRecoveryCodes data={recoveryCodes} />
-                  <RecoveryCodes data={recoveryCodes} account={account} handleCopy={handleCopy} />
+                  <RecoveryCodes
+                    data={recoveryCodes}
+                    account={account}
+                    handleCopy={handleCopy}
+                  />
                 </div>
               )}
-              {saveVisible && (
-                <ContinueWithGoogle account={account} />
-              )}
+              {saveVisible && <ContinueWithGoogle account={account} />}
             </div>
           </div>
         )
@@ -147,7 +166,7 @@ function IndexPopup() {
   )
 }
 
-const ContinueWithGoogle = props => {
+const ContinueWithGoogle = (props) => {
   const { account } = props
   const [loading, setLoading] = React.useState(false)
   const [userInfo, setUserInfo] = React.useState<{ email?: string }>({})
@@ -157,7 +176,7 @@ const ContinueWithGoogle = props => {
   }, [])
 
   const getProfileUserInfo = () => {
-    chrome.identity.getProfileUserInfo(userInfo => {
+    chrome.identity.getProfileUserInfo((userInfo) => {
       setUserInfo(userInfo)
     })
   }
@@ -170,29 +189,37 @@ const ContinueWithGoogle = props => {
 
   const createGmailDraft = () => {
     setLoading(true)
+    // chrome.identity.removeCachedAuthToken({
+    //   token:
+    //     "ya29.a0AXooCguFTyVB2uzipeB7qHqCm3RBDqrh_47EDf38MLe50cREL4Dr4fELRlwPQufS6x4LaQHpjMb0mB4OFGIxv7AaysxjQxtQlBEPngaCvLwOCfFROeFUp71z0Y59dZy5vMWr77qtPXpOP0vVjREssEsszbuWBg8gBMjYaCgYKAQYSARMSFQHGX2MiKt--0FqqwTnC76Dawo8vtQ0171"
+    // })
+    // return
     chrome.identity.getAuthToken({ interactive: true }, async (token) => {
-      getProfileUserInfo()
+      console.log("token: ", token)
       const data = await dataSource.get()
       const { issuer, secret, recoveryCodes = [] } = data[account]
-      const codes = recoveryCodes.map(item => item.value).join("、")
+      const codes = recoveryCodes.map((item) => item.value).join("、")
       createGmailDraftMessage(token, {
         subject: `Github 2FA (${account}) - ${new Date().toLocaleDateString()}`,
         content: `
           2FA issuer: ${issuer} \n
           2FA secret: ${secret} \n
           Github Recrecovery Codes: ${codes}
-        `,
-      }).then(res => {
-        if (res.error) {
-          Toast.error(res.error.message)
-          return
-        }
-        Toast.success(i18n("savedSuccessfully"))
-      }).catch(err => {
-        Toast.error(err)
-      }).finally(() => {
-        setLoading(false)
+        `
       })
+        .then((res) => {
+          if (res.error) {
+            Toast.error(res.error.message)
+            return
+          }
+          Toast.success(i18n("savedSuccessfully"))
+        })
+        .catch((err) => {
+          Toast.error(err)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     })
   }
 
@@ -201,12 +228,13 @@ const ContinueWithGoogle = props => {
   if (email) {
     return (
       <div>
-        <Button loading={loading} onClick={createGmailDraft}>{i18n("createGmailDraft")}</Button>
+        <Button loading={loading} onClick={createGmailDraft}>
+          {i18n("createGmailDraft")}
+        </Button>
         <Text
           underline
           link={{ href: "https://mail.google.com/" }}
-          style={{ marginTop: 16, display: "flex", alignItems: "center" }}
-        >
+          style={{ marginTop: 16, display: "flex", alignItems: "center" }}>
           {email}
         </Text>
       </div>
@@ -216,15 +244,18 @@ const ContinueWithGoogle = props => {
   return (
     <Button>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <img style={{ width: 20, height: 20, marginRight: 8 }} src={gmailIconUrl} alt="" />
+        <img
+          style={{ width: 20, height: 20, marginRight: 8 }}
+          src={gmailIconUrl}
+          alt=""
+        />
         <span onClick={withGoogle}>{i18n("withGoogle")}</span>
       </div>
     </Button>
   )
 }
 
-
-const RecoveryCodes = props => {
+const RecoveryCodes = (props) => {
   const { account, data, handleCopy } = props
   return (
     <div>
@@ -233,18 +264,24 @@ const RecoveryCodes = props => {
         const style = {
           width: 120,
           margin: "0 8px 8px 0",
-          textDecoration: copyed ? "line-through" : "auto",
+          textDecoration: copyed ? "line-through" : "auto"
         }
         return (
           <Tag
             key={value}
-            size='large'
-            type='light'
-            shape='circle'
+            size="large"
+            type="light"
+            shape="circle"
             color={`${copyed ? "grey" : "light-blue"}`}
             style={style}
-            suffixIcon={!copyed && <IconCopy onClick={() => handleCopy(account, item)} style={{ cursor: "pointer" }} />}
-          >
+            suffixIcon={
+              !copyed && (
+                <IconCopy
+                  onClick={() => handleCopy(account, item)}
+                  style={{ cursor: "pointer" }}
+                />
+              )
+            }>
             {value}
           </Tag>
         )
@@ -253,8 +290,7 @@ const RecoveryCodes = props => {
   )
 }
 
-
-const NoRecoveryCodes = props => {
+const NoRecoveryCodes = (props) => {
   const { data } = props
 
   if (data.length > 0) return null
@@ -271,10 +307,10 @@ const NoRecoveryCodes = props => {
   )
 }
 
-const WarningBanner = props => {
+const WarningBanner = (props) => {
   const { data } = props
   /** 尚未使用的找回码 */
-  const restCodes = data.filter(item => !item.copyed)
+  const restCodes = data.filter((item) => !item.copyed)
 
   if (restCodes.length > 3) return null
   if (!restCodes.length) return null
@@ -283,10 +319,7 @@ const WarningBanner = props => {
       style={{ marginBottom: 8 }}
       type="warning"
       description={
-        <a
-          style={{ textDecoration: "underline" }}
-          href={SECURITY_URL}
-        >
+        <a style={{ textDecoration: "underline" }} href={SECURITY_URL}>
           {i18n("recoveryCodesLessTip", restCodes.length)}
         </a>
       }
@@ -294,7 +327,7 @@ const WarningBanner = props => {
   )
 }
 
-const TFACode = props => {
+const TFACode = (props) => {
   const { secret } = props
   const [percent, setPercent] = React.useState(0)
 
@@ -315,11 +348,7 @@ const TFACode = props => {
     return (
       <Text style={{ fontWeight: 900 }}>
         <span>{i18n("noSectet")}</span>
-        <Text
-          underline
-          icon={<IconLink />}
-          link={{ href: SECURITY_URL }}
-        >
+        <Text underline icon={<IconLink />} link={{ href: SECURITY_URL }}>
           {i18n("goToGen")}
         </Text>
       </Text>
@@ -329,7 +358,11 @@ const TFACode = props => {
   const type = percent > 85 ? "warning" : "primary"
   return (
     <div>
-      <Progress size="small" stroke={`var(--semi-color-${type})`} percent={percent} />
+      <Progress
+        size="small"
+        stroke={`var(--semi-color-${type})`}
+        percent={percent}
+      />
       <Title copyable style={{ padding: "8px 0" }}>
         {authenticator.generate(secret)}
       </Title>
@@ -337,8 +370,7 @@ const TFACode = props => {
   )
 }
 
-const Disclaimers = props => {
-
+const Disclaimers = (props) => {
   const [visible, setVisible] = useStorage("disclaimerVisible", true)
 
   const onClose = () => {

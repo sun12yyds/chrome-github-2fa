@@ -1,51 +1,54 @@
-
 import type { PlasmoCSConfig } from "plasmo"
-import { dataSource } from '../util'
 
+import { dataSource } from "../util"
 
 export const config: PlasmoCSConfig = {
-	matches: [
+  matches: [
     "https://github.com/settings/auth/recovery-codes",
-    "https://github.com/settings/auth/recovery-codes?",
+    "https://github.com/settings/auth/recovery-codes?"
   ],
-	all_frames: true
+  all_frames: true
 }
 
 class Authenticator {
+  constructor() {
+    this.init()
+  }
 
-	constructor() {
-		this.init()
-	}
-
-	async init() {
-		this.renderButton()
-	}
+  async init() {
+    this.renderButton()
+  }
 
   renderButton() {
-    const container: HTMLDivElement = document.querySelector('.recovery-codes-saving-options')
+    const container: HTMLDivElement = document.querySelector(
+      ".recovery-codes-saving-options"
+    )
     if (!container) return
     container.style.marginLeft = "0px"
     const button = document.createElement("span")
-    button.setAttribute('class', "btn")
+    button.setAttribute("class", "btn")
     button.innerText = "github-2fa"
     button.title = "Save recovery codes in github-2fa"
-    button.addEventListener('click', () => {
-      const items = document.querySelectorAll('.two-factor-recovery-code')
-      const data = ([...items] as HTMLLIElement[]).map(item => item.innerText).map(item => {
-        return {
-          value: item,
-        }
-      })
-      const userNameElement: HTMLSpanElement = document.querySelector('.Truncate-text')
-      if (!userNameElement) return
-      const username = userNameElement.innerText.trim()
-      dataSource.setRecoveryCodes(username, data)
+    button.addEventListener("click", () => {
+      const items = document.querySelectorAll(".two-factor-recovery-code")
+      const data = ([...items] as HTMLLIElement[])
+        .map((item) => item.innerText)
+        .map((item) => {
+          return {
+            value: item
+          }
+        })
+      const meta = document.querySelector('meta[name="user-login"]')
+      if (!meta) return
+      const userName = meta.getAttribute("content") || ""
+      if (!userName) return
+      dataSource.setRecoveryCodes(userName, data)
 
       const oColor = button.style.color
       button.style.color = "green"
       setTimeout(() => {
         button.style.color = oColor
-      }, 1000);
+      }, 1000)
     })
     container.appendChild(button)
   }
@@ -53,6 +56,4 @@ class Authenticator {
 
 const auth = new Authenticator()
 
-
-
-export { }
+export {}

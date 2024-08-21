@@ -1,0 +1,47 @@
+{
+  "extensionName": {
+    "message": "Github 2FA",
+    "description": ""
+  },
+  "extensionDescription": {
+    "message": "Easy GitHub 2FA authentication.",
+    "description": ""
+  },
+
+  "recoveryCodes": {
+    "message": "Recovery Codes",
+    "description": ""
+  },
+
+  "nodata": {
+    "message": "No data",
+    "description": ""
+  },
+
+  "noRecoveryCodes": {
+    "message": "Recovery codes have not been saved to github-2fa yet, please save the data in a timely manner to avoid forgetting.",
+    "description": ""
+  },
+  "recoveryCodesLessTip": {
+    "message": "Recovery codes only $params$ left, please generate it promptly.",
+    "description": "",
+    "placeholders": {
+      "params": {
+        "content": "$1",
+        "example": ""
+      }
+    }
+  },
+  "startTip": {
+    "message": "Start managing your Github 2FA Code.",
+    "description": ""
+  },
+  "goToGen": {
+    "message": "Go to generate",
+    "description": ""
+  },
+  "noSectet": {
+    "message": "Secret has not been generated yet.",
+    "description": ""
+  }
+}

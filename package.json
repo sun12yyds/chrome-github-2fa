@@ -1,8 +1,8 @@
 {
   "name": "github2fa",
-  "displayName": "Github 2FA",
+  "displayName": "__MSG_extensionName__",
   "version": "1.6.0",
-  "description": "Easy GitHub 2FA authentication.",
+  "description": "__MSG_extensionDescription__",
   "author": "shisongyan. <songyan_shi@163.com>",
   "scripts": {
     "dev": "plasmo dev",
@@ -30,6 +30,7 @@
     "typescript": "5.3.3"
   },
   "manifest": {
+    "default_locale": "en",
     "permissions": [
       "tabs",
       "contextMenus"

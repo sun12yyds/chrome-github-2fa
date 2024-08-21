@@ -11,7 +11,6 @@ import {
 } from "@douyinfe/semi-ui"
 import React, { useState } from "react"
 
-import i18n from "./i18n"
 import {
   authenticator,
   authenticatorOptions,
@@ -78,7 +77,7 @@ function IndexPopup() {
     return (
       <div style={containerStyle}>
         <Empty
-          title={i18n("nodata")}
+          title={chrome.i18n.getMessage("noData")}
           image={
             <IllustrationConstruction style={{ width: 150, height: 150 }} />
           }
@@ -90,7 +89,7 @@ function IndexPopup() {
               link={{
                 href: "javascript:void(0)"
               }}>
-              {i18n("startTip")}
+              {chrome.i18n.getMessage("startTip")}
             </Text>
           }
         />
@@ -127,7 +126,9 @@ function IndexPopup() {
                   {account}
                 </Tag>
               </Radio>
-              <Radio value="Recovery">{i18n("recoveryCodes")}</Radio>
+              <Radio value="Recovery">
+                {chrome.i18n.getMessage("recoveryCodes")}
+              </Radio>
             </RadioGroup>
             <div style={{ margin: "12px 0 8px 0" }}>
               {tfaVisible && <TFACode secret={secret} />}
@@ -192,14 +193,14 @@ const NoRecoveryCodes = (props) => {
 
   return (
     <Empty
-      title={i18n("nodata")}
+      title={chrome.i18n.getMessage("nodata")}
       image={<IllustrationConstruction style={{ width: 150, height: 150 }} />}
       description={
         <a
           onClick={goSettingSecurity}
           style={{ textDecoration: "underline" }}
           href="javascript:void(0)">
-          {i18n("noRecoveryCodes")}
+          {chrome.i18n.getMessage("noRecoveryCodes")}
         </a>
       }
     />
@@ -221,7 +222,9 @@ const WarningBanner = (props) => {
         <a
           style={{ textDecoration: "underline" }}
           href="https://github.com/settings/security?type=app#two-factor-summary">
-          {i18n("recoveryCodesLessTip", restCodes.length)}
+          {chrome.i18n.getMessage("recoveryCodesLessTip", [
+            `${restCodes.length}`
+          ])}
         </a>
       }
     />
@@ -248,7 +251,7 @@ const TFACode = (props) => {
   if (!secret) {
     return (
       <Text style={{ fontWeight: 900 }}>
-        <span>{i18n("noSectet")}</span>
+        <span>{chrome.i18n.getMessage("noSectet")}</span>
         <Text
           underline
           icon={<IconLink />}
@@ -256,7 +259,7 @@ const TFACode = (props) => {
           link={{
             href: "javascript:void(0)"
           }}>
-          {i18n("goToGen")}
+          {chrome.i18n.getMessage("goToGen")}
         </Text>
       </Text>
     )

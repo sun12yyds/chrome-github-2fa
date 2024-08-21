@@ -1,5 +1,7 @@
 import type { PlasmoCSConfig } from "plasmo"
 
+import { getUserName } from "~util"
+
 export const config: PlasmoCSConfig = {
   matches: ["https://github.com/*"]
 }
